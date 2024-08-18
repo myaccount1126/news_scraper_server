@@ -91,7 +91,18 @@ export class ArticleService {
   }
 
   async scrapeHK01() {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: [
+        '--disable-setuid-sandbox',
+        '--no-sandbox',
+        '--single-process',
+        '--no-zygote',
+      ],
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+    });
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(5000000);
     try {
@@ -151,7 +162,18 @@ export class ArticleService {
   }
 
   async scrapeSingTao() {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: [
+        '--disable-setuid-sandbox',
+        '--no-sandbox',
+        '--single-process',
+        '--no-zygote',
+      ],
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+    });
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(50000000);
     await page.goto('https://std.stheadline.com/realtime/%E5%8D%B3%E6%99%82');
